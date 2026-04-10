@@ -1,0 +1,126 @@
+--DROP SCHEMA IF EXISTS hotel_schema CASCADE;
+--CREATE SCHEMA hotel_schema;
+
+SET search_path TO hotel_schema;
+
+--CREATE TABLE Hotel (
+--    hotel_id SERIAL PRIMARY KEY,
+--    name VARCHAR(100) NOT NULL,
+--    address VARCHAR(200) NOT NULL,
+--    city VARCHAR(100) NOT NULL,
+--    country VARCHAR(100) NOT NULL,
+--    phone VARCHAR(20) NOT NULL,
+--    email VARCHAR(100) NOT NULL UNIQUE
+--);
+--
+--CREATE TABLE Room_Type (
+--    room_type_id SERIAL PRIMARY KEY,
+--    type_name VARCHAR(50) NOT NULL UNIQUE,
+--    price_per_night DECIMAL(10,2) NOT NULL CHECK (price_per_night >= 0),
+--    max_capacity INT NOT NULL CHECK (max_capacity > 0)
+--);
+
+--CREATE TABLE Room (
+--    room_id SERIAL PRIMARY KEY,
+--    hotel_id INT NOT NULL,
+--    room_type_id INT NOT NULL,
+--    room_number VARCHAR(10) NOT NULL,
+--    status VARCHAR(20) DEFAULT 'Available',
+--    
+--    CONSTRAINT uq_room UNIQUE (hotel_id, room_number),
+--
+--    FOREIGN KEY (hotel_id) REFERENCES Hotel(hotel_id),
+--    FOREIGN KEY (room_type_id) REFERENCES Room_Type(room_type_id)
+--);
+
+--
+--CREATE TABLE Customer (
+--    customer_id SERIAL PRIMARY KEY,
+--    first_name VARCHAR(50) NOT NULL,
+--    last_name VARCHAR(50) NOT NULL,
+--    phone VARCHAR(20) NOT NULL UNIQUE,
+--    email VARCHAR(100) NOT NULL UNIQUE,
+--    passport_number VARCHAR(50) NOT NULL UNIQUE
+--);
+
+--CREATE TABLE Booking (
+--    booking_id SERIAL PRIMARY KEY,
+--    customer_id INT NOT NULL,
+--    room_id INT NOT NULL,
+--
+--    check_in_date DATE NOT NULL,
+--    check_out_date DATE NOT NULL,
+--
+--    total_nights INT GENERATED ALWAYS AS (check_out_date - check_in_date) STORED,
+--
+--    status VARCHAR(20) DEFAULT 'Reserved',
+--
+--    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+--
+--    CONSTRAINT chk_booking_dates 
+--        CHECK (check_in_date < check_out_date),
+--
+--    CONSTRAINT chk_booking_future 
+--        CHECK (check_in_date > DATE '2026-01-01'),
+--
+--    FOREIGN KEY (customer_id) REFERENCES Customer(customer_id),
+--    FOREIGN KEY (room_id) REFERENCES Room(room_id)
+--);
+--
+--CREATE TABLE Guest (
+--    guest_id SERIAL PRIMARY KEY,
+--    booking_id INT NOT NULL,
+--    first_name VARCHAR(50) NOT NULL,
+--    last_name VARCHAR(50) NOT NULL,
+--    passport_number VARCHAR(50),
+--    date_of_birth DATE,
+--
+--    FOREIGN KEY (booking_id) REFERENCES Booking(booking_id)
+--);
+
+--CREATE TABLE Payment (
+--    payment_id SERIAL PRIMARY KEY,
+--    booking_id INT NOT NULL,
+--    payment_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+--    amount DECIMAL(10,2) NOT NULL CHECK (amount > 0),
+--    payment_method VARCHAR(50) NOT NULL,
+--
+--    FOREIGN KEY (booking_id) REFERENCES Booking(booking_id)
+--);
+--
+--CREATE TABLE Staff (
+--    staff_id SERIAL PRIMARY KEY,
+--    hotel_id INT NOT NULL,
+--    first_name VARCHAR(50) NOT NULL,
+--    last_name VARCHAR(50) NOT NULL,
+--
+--    position VARCHAR(50) NOT NULL CHECK (
+--        position IN ('Manager', 'Receptionist', 'Cleaner', 'Security')
+--    ),
+--
+--    phone VARCHAR(20) NOT NULL UNIQUE,
+--
+--    FOREIGN KEY (hotel_id) REFERENCES Hotel(hotel_id)
+--);
+
+--CREATE TABLE Service (
+--    service_id SERIAL PRIMARY KEY,
+--    service_name VARCHAR(100) NOT NULL UNIQUE,
+--    price DECIMAL(10,2) NOT NULL CHECK (price >= 0)
+--);
+
+--CREATE TABLE Booking_Service (
+--    booking_id INT NOT NULL,
+--    service_id INT NOT NULL,
+--    quantity INT NOT NULL DEFAULT 1 CHECK (quantity > 0),
+--    service_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+--
+--    PRIMARY KEY (booking_id, service_id),
+--
+--    FOREIGN KEY (booking_id) REFERENCES Booking(booking_id),
+--    FOREIGN KEY (service_id) REFERENCES Service(service_id)
+--);
+--
+--CREATE INDEX idx_booking_customer ON Booking(customer_id);
+--CREATE INDEX idx_room_hotel ON Room(hotel_id);
+
