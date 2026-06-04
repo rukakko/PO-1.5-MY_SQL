@@ -3,16 +3,6 @@ create schema if not exists pet_clinic;
 set search_path to pet_clinic;
 
 
-drop table if exists payments cascade;
-drop table if exists appointment_treatments cascade;
-drop table if exists appointments cascade;
-drop table if exists treatments cascade;
-drop table if exists pets cascade;
-drop table if exists veterinarians cascade;
-drop table if exists owners cascade;
-
-
-
 create table if not exists owners
 (
     owner_id int generated always as identity primary key,
@@ -187,6 +177,7 @@ alter column status set default 'Scheduled';
 alter table pets
 add column species_notes varchar(255);
 
+-- Part 4 — INSERT
 truncate table payments restart identity cascade;
 truncate table appointment_treatments restart identity cascade;
 truncate table appointments restart identity cascade;
@@ -194,6 +185,7 @@ truncate table treatments restart identity cascade;
 truncate table pets restart identity cascade;
 truncate table veterinarians restart identity cascade;
 truncate table owners restart identity cascade;
+
 
 insert into owners
 (first_name,last_name,email,phone,city,registration_date)
@@ -377,7 +369,7 @@ join appointments a
     on a.pet_id = p.pet_id
    and a.visit_reason = x.reason;
 
--- update 
+-- part 5 update 
 update appointments
 set status = 'Completed'
 where visit_reason in ('Vaccination','Dental check','X-Ray');
@@ -401,7 +393,7 @@ returning appointment_id;
 
 rollback;
 
--- grant / revoke
+-- part 6 GRANT + REVOKE 
 drop role if exists pet_clinic_readonly;
 drop role if exists pet_clinic_writer;
 
